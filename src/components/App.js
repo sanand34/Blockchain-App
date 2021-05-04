@@ -5,12 +5,18 @@ import "./App.css";
 import Web3 from "web3";
 function App() {
   const [account, setAccount] = useState("0x0");
-
+  const [daiToken, setDaiToken] = useState({});
+  const [dappToken, setDappToken] = useState({});
+  const [tokenFarm, setTokenFarm] = useState({});
+  const [daiTokenBalance, setDaiTokenBalance] = useState("0");
+  const [dappTokenBalance, setDappTokenBalance] = useState("0");
+  const [stakingBalance, setStakingBalance] = useState("0");
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function loadWeb3() {
       if (window.ethereum) {
         window.web3 = new Web3(window.ethereum);
-        await window.ethereum.enable();
+        console.log('success')
       } else if (window.web3) {
         window.web3 = new Web3(window.web3.currentProvider);
       } else {
@@ -23,12 +29,18 @@ function App() {
       const web3 = window.web3;
 
       const accounts = await web3.eth.getAccounts();
-    }
 
-    return () => {
+      setAccount(accounts);
+      
+      const networkId=await web3.eth.net.getId();
+      console.log(networkId);
+  
+  
+    }
+    
       loadWeb3();
       loadBlockchainData();
-    };
+    
   }, []);
 
   return (
